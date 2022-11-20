@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model flats {
+  id           Int     @id
+  floor        Int     @db.SmallInt
+  pos_on_floor Int     @db.SmallInt
+  price        Float   @db.Real
+  rooms        Int     @db.SmallInt
+  area_total   Float   @db.Real
+  area_kitchen Float   @db.Real
+  area_live    Float   @db.Real
+  layout_image String?
+}
