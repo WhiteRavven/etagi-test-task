@@ -1,17 +1,17 @@
 import styles from './FlatsFilter.module.css';
 import {Box, Button, Chip, IconButton, Paper, Typography} from "@mui/material";
-import {NumericRange, NumericRangeSelect} from "../NumericRangeSelect";
+import {NumericRange, NumericRangeSelect} from "../NumericRangeSelect/NumericRangeSelect";
 import {useState} from "react";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 const DISPLAY_NAMES: any = {
-    price: 'цена',
+    price: 'Цена',
     rooms: 'Количество комнат',
     area_total: 'Общая площадь',
     area_live: 'Жилая площадь',
     area_kitchen: 'Площадь кухни',
-    floor: 'этаж',
+    floor: 'Этаж',
 }
 
 const FLATS_FILTERS_BASE = [

@@ -3,8 +3,13 @@ import formatPrice from "../../utils/formatPrice";
 import {Flat} from "../../types/Flat";
 
 
-export default function FlatCard({flat, onClick, ...props}: { flat: Flat, onClick?: (id: number) => void }) {
-    return <Card {...props} style={{cursor: "pointer"}}>
+export default function FlatCard({
+                                     flat,
+                                     onCardClick,
+                                     onShowClick,
+                                     ...props
+                                 }: { flat: Flat, onCardClick?: (event: any, flat: Flat) => void, onShowClick?: (event: any, flat: Flat) => void }) {
+    return <Card onClick={(e) => onCardClick?.(e, flat)} {...props} style={{cursor: "pointer"}}>
         <CardMedia
             component="img"
             height="140"
@@ -23,7 +28,7 @@ export default function FlatCard({flat, onClick, ...props}: { flat: Flat, onClic
             </Typography>
         </CardContent>
         <CardActions>
-            <Button size="small" onClick={() => onClick?.(flat.id)}>Подробнее</Button>
+            <Button size="small" onClick={(e) => onShowClick?.(e, flat)}>Подробнее</Button>
         </CardActions>
     </Card>
 }

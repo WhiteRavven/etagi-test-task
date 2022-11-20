@@ -5,28 +5,19 @@ import React, {useEffect, useState} from "react";
 import useResizeObserver from "use-resize-observer";
 import {FLOOR_LAYOUT} from "../../constants/floorLayout";
 import {Flat} from "../../types/Flat";
-import {Popover} from "@mui/material";
+import {Box, Popover} from "@mui/material";
 import FlatCard from "../FlatCard/FlatCard";
 import {useRouter} from "next/router";
 
-export default function FloorLayoutViewer({floor}: { floor: number }) {
+export default function FloorLayoutViewer({flats}: { flats: Flat[] }) {
     const router = useRouter();
 
-    const [flats, setFlats] = useState<Flat[] | null>(null);
     const [hoveredFlat, setHoveredFlat] = useState<Flat | null>(null);
     const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null);
     const {width = 1, height = 1} = useResizeObserver<HTMLImageElement>({ref: imageRef});
 
     const [anchorEl, setAnchorEl] = useState<null | SVGPolygonElement>(null);
     const isPopoverOpen = Boolean(anchorEl);
-
-    useEffect(() => {
-        fetch('/api/flats?' + new URLSearchParams({floor: floor.toString()}))
-            .then((res) => res.json())
-            .then((data) => {
-                setFlats(data)
-            })
-    }, []);
 
     const popoverOpenHandler = (event: React.MouseEvent<SVGPolygonElement>, flat: Flat) => {
         setAnchorEl(event.currentTarget);
@@ -73,24 +64,26 @@ export default function FloorLayoutViewer({floor}: { floor: number }) {
             >
                 <FlatCard flat={hoveredFlat}/>
             </Popover> : null}
-            <Image onLoadingComplete={ImageLoadingCompleteHandler} className={styles.image}
-                   fill
-                   src={layoutImg}
-                   alt="floor layout"/>
-            <svg height={height} width={width} className={styles.polygonMap}>
-                {flats.map((flat: Flat) => {
-                    const points = FLOOR_LAYOUT[flat.pos_on_floor]
-                        .map(translateAbsoluteToRelative)
-                        .reduce((a: string, [x, y]: number[]) => a + `${x},${y} `, '');
-                    return <polygon
-                        key={flat.id}
-                        points={points}
-                        onMouseEnter={(e) => popoverOpenHandler(e, flat)}
-                        onMouseLeave={popoverCloseHandler}
-                        onClick={() => flatOpenHandler(flat.id)}
-                    />
-                })}
-            </svg>
+            <Box overflow="scroll">
+                <Image onLoadingComplete={ImageLoadingCompleteHandler} className={styles.image}
+                       fill
+                       src={layoutImg}
+                       alt="floor layout"/>
+                <svg height={height} width={width} className={styles.polygonMap}>
+                    {flats.map((flat: Flat) => {
+                        const points = FLOOR_LAYOUT[flat.pos_on_floor]
+                            .map(translateAbsoluteToRelative)
+                            .reduce((a: string, [x, y]: number[]) => a + `${x},${y} `, '');
+                        return <polygon
+                            key={flat.id}
+                            points={points}
+                            onMouseEnter={(e) => popoverOpenHandler(e, flat)}
+                            onMouseLeave={popoverCloseHandler}
+                            onClick={() => flatOpenHandler(flat.id)}
+                        />
+                    })}
+                </svg>
+            </Box>
         </>
     )
 }

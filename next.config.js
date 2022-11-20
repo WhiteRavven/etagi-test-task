@@ -9,6 +9,7 @@ const nextConfig = {
         hostname: 'cdn.esoft.digital',
       },
     ],
+    minimumCacheTTL: 60,
   },
 }
 

@@ -1,14 +1,15 @@
 // @ts-nocheck
-import {Box, Pagination} from "@mui/material";
+import {Box, Dialog, Modal, Pagination, useMediaQuery} from "@mui/material";
 import {ChangeEvent, useState} from "react";
 import prisma from '../../lib/prisma';
-import {NumericRange} from "../../components/NumericRangeSelect";
+import {NumericRange} from "../../components/NumericRangeSelect/NumericRangeSelect";
 import FlatsFilterMenu, {FlatsFilter} from "../../components/FlatsFilterMenu/FlatsFilterMenu";
 import {Flat} from "../../types/Flat";
 import FlatsList from "../../components/FlatsList/FlatsList";
 import useNextRouter from "../../hooks/useNextRouter";
+import FlatInfo from "../../components/FlatInfo/FlatInfo";
 
-const DEFAULT_PAGE_SIZE = 4;
+const DEFAULT_PAGE_SIZE = 10;
 
 const defaultFlatsFilter = {
     price: {},
@@ -66,6 +67,20 @@ export default function Index({
                               }: { flatsFilter: FlatsFilter, flatsData: Flat[], totalCount: number, page: number, pageSize: number, }) {
     const [filter, setFilter] = useState<FlatsFilter>(flatsFilter);
     const {router, addQueryParam, removeQueryParam} = useNextRouter();
+    const matches720 = useMediaQuery('(min-width:720px)');
+
+    const [openFlatModal, setOpenFlatModal] = useState<boolean>(false);
+    const [selectedFlat, setSelectedFlat] = useState<Flat | null>(null);
+
+    const openFlatModalHandler = (event, flat) => {
+        setOpenFlatModal(true);
+        setSelectedFlat(flat);
+    }
+
+    const closeFlatModalHandler = () => {
+        setOpenFlatModal(false);
+        setSelectedFlat(null);
+    }
 
     const filterChangeHandler = (field: string, value: NumericRange | null) => {
         setFilter((prevValue: FlatsFilter) => {
@@ -97,15 +112,27 @@ export default function Index({
         addQueryParam('page', value.toString());
     }
 
-    const flatItemClickHandler = (id: number) => {
-        router.push(`/flats/${id}`)
+    const itemShowClickHandler = (event, flat) => {
+        event.stopPropagation();
+        router.push(`/flats/${flat.id}`)
     }
 
-    return <Box display="flex" flexDirection="column" gap="12px">
-        <FlatsFilterMenu filter={filter} onChange={filterChangeHandler} onSubmit={filterSubmitHandler}
-                         onClear={filterClearHandler}/>
-        <FlatsList onItemClick={flatItemClickHandler} flats={flatsData}/>
-        <Pagination value={page} onChange={pageChangeHandler} count={Math.ceil(totalCount / pageSize)}
-                    variant="outlined" shape="rounded"/>
-    </Box>;
+    return (
+        <>
+            {openFlatModal && selectedFlat ? <Dialog
+                open={openFlatModal}
+                onClose={closeFlatModalHandler}
+            >
+                <Box minWidth={matches720 ? "600px" : "89vw"}>
+                    <FlatInfo flat={selectedFlat}/>
+                </Box>
+            </Dialog> : null}
+            <Box display="flex" flexDirection="column" gap="12px">
+                <FlatsFilterMenu filter={filter} onChange={filterChangeHandler} onSubmit={filterSubmitHandler}
+                                 onClear={filterClearHandler}/>
+                <FlatsList onCardClick={openFlatModalHandler} onShowClick={itemShowClickHandler} flats={flatsData}/>
+                <Pagination value={page} onChange={pageChangeHandler} count={Math.ceil(totalCount / pageSize)}
+                            variant="outlined" shape="rounded"/>
+            </Box>
+        </>);
 }
