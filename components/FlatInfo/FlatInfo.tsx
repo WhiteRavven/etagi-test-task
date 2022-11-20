@@ -4,6 +4,7 @@ import Image from "next/image";
 import {useState} from "react";
 import TabPanel from "../TabPanel/TabPanel";
 import FloorLayoutViewer from "../FloorLayoutViewer/FloorLayoutViewer";
+import formatPrice from "../../utils/formatPrice";
 
 const FlatSummary = ({title, value}: { title: string, value: string }) => {
     return <Box>
@@ -37,12 +38,12 @@ export default function FlatInfo({flat}: { flat: Flat }) {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Box position="relative" width={500} height={500} margin="0 auto">
-                        <FloorLayoutViewer/>
+                        <FloorLayoutViewer floor={flat.floor}/>
                     </Box>
                 </TabPanel>
             </Box>
             <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap="20px">
-                <FlatSummary title="Цена" value={`${flat.price} ₽`}/>
+                <FlatSummary title="Цена" value={formatPrice(flat.price)}/>
                 <FlatSummary title="Общая" value={`${flat.area_total} м²`}/>
                 <FlatSummary title="Кухня" value={`${flat.area_kitchen} м²`}/>
                 <FlatSummary title="Этаж" value={`${flat.floor} из 4`}/>

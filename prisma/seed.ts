@@ -5,7 +5,7 @@ import {PrismaClient} from '@prisma/client';
 
 const prisma = new PrismaClient()
 
-const strToNumber = (str: string) => +str.replace(',', '')
+const strToNumber = (str: string) => +str.replace(',', '.')
 
 async function main() {
     const data = await new Promise<any[]>((resolve, reject) => {
@@ -33,6 +33,8 @@ async function main() {
         area_live: strToNumber(row[7]),
         layout_image: row[8],
     }));
+
+    await prisma.flats.deleteMany();
 
     await prisma.flats.createMany(
         {data: records}

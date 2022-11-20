@@ -9,7 +9,7 @@ export default function AppLayout({children}: { children: ReactNode }) {
     return <div id="app_layout_root">
         <AppBar/>
         <Grid bgcolor="#E7EBF0" minHeight="calc(100vh - 64px)" container>
-            <Grid padding="12px 0" margin="0 auto" item xs={matches720 ? 9 : 12}>
+            <Grid padding="12px 0" margin="0 auto" item xs={matches720 ? 9 : 11}>
                 <Box mb="12px">
                     <Breadcrumbs/>
                 </Box>
