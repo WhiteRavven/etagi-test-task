@@ -129,7 +129,7 @@ export default function Index({
     <>
       {openFlatModal && selectedFlat ? (
         <Dialog open={openFlatModal} onClose={closeFlatModalHandler}>
-          <Box minWidth={matches720 ? "600px" : "89vw"}>
+          <Box minWidth={matches720 ? "600px" : ""}>
             <FlatInfo flat={selectedFlat} />
           </Box>
         </Dialog>
