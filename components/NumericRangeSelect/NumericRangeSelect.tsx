@@ -1,9 +1,9 @@
-import {Box, TextField, Typography} from "@mui/material";
+import {Box, TextField} from "@mui/material";
 
 export interface NumericRange {
     min?: number,
     max?: number,
-};
+}
 
 interface NumericRangeSelectProps {
     value: NumericRange,
@@ -14,16 +14,18 @@ interface NumericRangeSelectProps {
 export const NumericRangeSelect = ({value, onChange}: NumericRangeSelectProps) => {
 
     const filterChangeHandler = (name: 'min' | 'max', changedValue: string) => {
+        const numericValue = +changedValue;
         let newValue = {
             ...value,
         };
-        if (changedValue.length > 0) {
-            newValue[name] = +changedValue;
-        }
-        else {
+
+        if (numericValue <= 0 || isNaN(numericValue)) {
             delete newValue[name];
+            onChange(newValue);
+            return;
         }
 
+        newValue[name] = numericValue;
         onChange(newValue);
     }
 

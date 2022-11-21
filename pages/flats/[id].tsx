@@ -24,9 +24,6 @@ export async function getStaticProps(context:any) {
 }
 
 export default function FlatPage({flat}: { flat: Flat }) {
-    const router = useRouter()
-    const id = router.query.id as string
-
     return (
         <FlatInfo flat={flat} />
     )

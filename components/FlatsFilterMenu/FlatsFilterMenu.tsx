@@ -1,4 +1,3 @@
-import styles from './FlatsFilter.module.css';
 import {Box, Button, Chip, IconButton, Paper, Typography} from "@mui/material";
 import {NumericRange, NumericRangeSelect} from "../NumericRangeSelect/NumericRangeSelect";
 import {useState} from "react";
@@ -91,8 +90,6 @@ export default function FlatsFilterMenu({
                 </Box> : null}
 
                 <Box>
-                    <Button style={{marginRight: "16px"}} variant="contained"
-                            onClick={onSubmit}>Поиск</Button>
                     <Button style={{marginRight: "16px"}} variant="text"
                             onClick={showExtraFilterHandler}>Дополнительные фильтры</Button>
                 </Box>

@@ -1,6 +1,6 @@
 // @ts-nocheck
-import {Box, Dialog, Modal, Pagination, useMediaQuery} from "@mui/material";
-import {ChangeEvent, useState} from "react";
+import {Box, Dialog, Pagination, useMediaQuery} from "@mui/material";
+import {ChangeEvent, useEffect, useState} from "react";
 import prisma from '../../lib/prisma';
 import {NumericRange} from "../../components/NumericRangeSelect/NumericRangeSelect";
 import FlatsFilterMenu, {FlatsFilter} from "../../components/FlatsFilterMenu/FlatsFilterMenu";
@@ -71,6 +71,11 @@ export default function Index({
 
     const [openFlatModal, setOpenFlatModal] = useState<boolean>(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat | null>(null);
+
+    useEffect(() => {
+            filterSubmitHandler();
+        },
+        [filter, filterSubmitHandler]);
 
     const openFlatModalHandler = (event, flat) => {
         setOpenFlatModal(true);
