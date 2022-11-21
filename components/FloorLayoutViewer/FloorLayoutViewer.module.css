@@ -9,11 +9,8 @@
   left: 0;
 }
 
-.polygonMap polygon {
-  fill: #4646ff;
-  opacity: 0;
-}
-
 .polygonMap polygon:hover {
   opacity: 0.5;
 }
+
+

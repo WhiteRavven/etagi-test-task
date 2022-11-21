@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Box, Dialog, Pagination, useMediaQuery } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import prisma from "../../lib/prisma";
 import { NumericRange } from "../../components/NumericRangeSelect/NumericRangeSelect";
 import FlatsFilterMenu, {
@@ -80,10 +80,6 @@ export default function Index({
   const [openFlatModal, setOpenFlatModal] = useState<boolean>(false);
   const [selectedFlat, setSelectedFlat] = useState<Flat | null>(null);
 
-  useEffect(() => {
-    filterSubmitHandler();
-  }, [filter, filterSubmitHandler]);
-
   const openFlatModalHandler = (event, flat) => {
     setOpenFlatModal(true);
     setSelectedFlat(flat);
@@ -106,14 +102,14 @@ export default function Index({
     });
   };
 
-  const filterSubmitHandler = () => {
+  const filterSubmitHandler = useCallback(() => {
     if (Object.keys(filter).length > 0) {
       const filterEncoded = btoa(JSON.stringify(filter));
       addQueryParam("filter", filterEncoded);
     } else {
       removeQueryParam("filter");
     }
-  };
+  }, [filter, addQueryParam, removeQueryParam]);
 
   const filterClearHandler = () => {
     setFilter({});
@@ -128,6 +124,10 @@ export default function Index({
     event.stopPropagation();
     router.push(`/flats/${flat.id}`);
   };
+
+  useEffect(() => {
+    filterSubmitHandler();
+  }, [filter, filterSubmitHandler]);
 
   return (
     <>

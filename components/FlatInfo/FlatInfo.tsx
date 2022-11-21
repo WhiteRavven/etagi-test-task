@@ -55,7 +55,7 @@ export default function FlatInfo({ flat }: { flat: Flat }) {
           </TabPanel>
           <TabPanel value={selectedTab} index={1}>
             <Box position="relative" width={500} height={500} margin="0 auto">
-              {flats ? <FloorLayoutViewer flats={flats} /> : null}
+              {flats ? <FloorLayoutViewer selectedFlat={flat} flats={flats} /> : null}
             </Box>
           </TabPanel>
         </Box>
