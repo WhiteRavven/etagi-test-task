@@ -1,19 +1,19 @@
 .image {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .polygonMap {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .polygonMap polygon {
-    fill: #4646ff;
-    opacity: 0;
+  fill: #4646ff;
+  opacity: 0;
 }
 
 .polygonMap polygon:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
