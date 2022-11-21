@@ -116,18 +116,14 @@ export default function Index({
     removeQueryParam("filter");
   };
 
-  const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
-    addQueryParam("page", value.toString());
+  const pageChangeHandler = (event: ChangeEvent<unknown>, value: string) => {
+    addQueryParam("page", value);
   };
 
   const itemShowClickHandler = (event, flat) => {
     event.stopPropagation();
     router.push(`/flats/${flat.id}`);
   };
-
-  useEffect(() => {
-    filterSubmitHandler();
-  }, [filter, filterSubmitHandler]);
 
   return (
     <>
@@ -151,7 +147,7 @@ export default function Index({
           flats={flatsData}
         />
         <Pagination
-          value={page}
+          page={+page}
           onChange={pageChangeHandler}
           count={Math.ceil(totalCount / pageSize)}
           variant="outlined"

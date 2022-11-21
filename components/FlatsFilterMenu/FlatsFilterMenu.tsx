@@ -115,6 +115,9 @@ export default function FlatsFilterMenu({
           ) : null}
 
           <Box>
+            <Button variant="contained" onClick={onSubmit}>
+              Применить
+            </Button>
             <Button
               style={{ marginRight: "16px" }}
               variant="text"
